@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link
+    href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css"
+    rel="stylesheet"
+    integrity="sha384-GLhlTQ8iRABdZLl6O3oVMWSktQOp6b7In1Zl3/Jr59b6EGGoI1aFkw7cmDA6j6gD"
+    crossorigin="anonymous"
+  />
+    <script>
+        let obj={userId:"",password:""}
+        function handleInput(event) {
+        obj = { ...obj, [event.target.name]: event.target.value };
+        console.log(obj);
+      }
+      function checkLogin(event) {
+        event.preventDefault();
+        console.log(obj);
+        let xhr = new XMLHttpRequest();
+
+        xhr.open("post", "http://localhost:5500/login",true);
+        xhr.setRequestHeader("body", JSON.stringify(obj))
+        
+        
+
+        xhr.send(JSON.stringify(obj));
+
+        xhr.onload = function () {
+        
+
+            
+            document.getElementById('msg').innerHTML=xhr.responseText;
+            if(xhr.responseText=="Logged In"){
+               
+                document.getElementById('login').innerHTML='click here to enter Tweet';
+            }
+           
+            
+        };
+
+        //triggered when a network-level error occurs with the request
+        xhr.onerror = function () {
+          console.log("Network error occurred");
+        };
+      }
+    </script>
+</head>
+<body>
+    <div class="container">
+        <div class="row">
+
+            <div class=" offset-4 col-md-4">
+                <h3 class="tex-center">Login</h3>
+                <div class="form-group">
+                    <label for="user">UserId:</label>
+                    <input
+                      type="text"
+                      name="userId"
+                      
+                      class="form-control"
+                      oninput="handleInput(event)"
+                    />
+                  </div>
+                  <div class="form-group">
+                    <label for="lastname">Password</label>
+                    <input
+                      type="password"
+                      name="password"
+                    
+                      class="form-control"
+                      oninput="handleInput(event)"
+                    />
+                  </div>
+                  <button class="mt-2 btn bg-info" onclick="checkLogin(event)">
+                    Login
+                  </button>
+                  <p class="text-info" id="msg"></p>
+          <a href="http://localhost:5500/viewpage" id="login"></a>
+          <a href="http://localhost:5500/register" id="login">click here to register</a>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
